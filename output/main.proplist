@@ -1,2 +1,4 @@
 \contentsline {tcolorbox}{\numberline {1.1}Binomial formula for $\nabla ^nX_t$}{3}{tcb@cnt@proposition.1.1}%
 \contentsline {tcolorbox}{\numberline {1.2}Box-Cox as $\lambda \to 0$}{4}{tcb@cnt@proposition.1.2}%
+\contentsline {tcolorbox}{\numberline {2.1}Stationarity of $\bf MA(q)$}{7}{tcb@cnt@proposition.2.1}%
+\contentsline {tcolorbox}{\numberline {2.2}Cut-off of ACF in $\bf MA(q)$}{7}{tcb@cnt@proposition.2.2}%
