@@ -1,0 +1,196 @@
+\section{Introduction}
+\subsection{Time-series definitions}
+\begin{definition}[Time series]
+    A time-series is a sequence of observations of time-indexed random variables $(X_t)_{t\ge0}$. Typically, A time-series consists of three components.
+
+    \begin{itemize}
+        \item Trend $(T_t)$.
+        \item Cycle $(C_t)$.
+        \item Seasonal $(S_t)$.
+    \end{itemize}
+
+    \noindent Finally, there is a random error (residual) term $(R_t)$. Note that for the sake of this course, we will hardly consider the cycle $(C_t)$ term.
+\end{definition}
+
+\begin{definition}[Multiplicative \& Additive models]
+    The components of a time-series can be combined either \textbf{additively} or \text{multiplicatively}:
+    \begin{itemize}
+        \item \textbf{Additive model} : $X_t = T_t + C_t + S_t + R_t$.
+        \item \textbf{Multiplicative model} : $X_t = T_t\times C_t \times S_t \times R_t$.
+    \end{itemize}
+\end{definition}
+
+\subsection{Trend model}
+\begin{definition}[Trend model]
+    A trend model is defined as:
+    \begin{align*}
+        X_t = T_t + R_t
+    \end{align*}
+\end{definition}
+
+\textbf{Remark} : Consider the linear trend:
+\begin{align*}
+    T_t = \beta_0 + \beta_1 t, \ \ \beta_1 \ne 0
+\end{align*}
+
+\noindent We can then estimate the time-series $(X_t)_{t\ge0}$ using the following methods:
+\begin{itemize}
+    \item \textbf{Method 1} : Least square estimate the trend component $T_t$ by minimizing the sum squared error
+    \begin{align*}
+        SSE = \sum_{t\ge0} (X_t - T_t)^2
+    \end{align*}
+    \item \textbf{Method 2} : Eliminate the trend component via differencing operator.
+\end{itemize}
+
+\begin{definition}[Differencing operator]
+    We define the first difference operator $\nabla$ by:
+    \begin{align*}
+        \nabla X_t = X_t - X_{t-1} = (I-B)X_t
+    \end{align*}
+
+    \noindent Where $I$ is the identity operator and $B$ is the backward shift operator:
+    \begin{align*}
+        BX_t = X_{t-1}, \ B^i X_t = X_{t-i}
+    \end{align*}
+
+    \noindent The $i^{th}$ order differencing operator is:
+    \begin{align*}
+        \nabla^i X_t = \nabla(\nabla^{i-1}X_t)
+    \end{align*}
+
+    \noindent Note that $\nabla^0X_t = I$.
+\end{definition}
+
+\begin{proposition}{Binomial formula for $\nabla^nX_t$}{binomial_formula_diff_operator}
+    Given a time-series $(X_t)_{t\ge0}$, we can write the differenced data to the $n^{th}$ order as followed:
+    \begin{align*}
+        \nabla^nX_t = \sum_{k=0}^n \begin{pmatrix}
+            n \\ k
+        \end{pmatrix}(-1)^{k}B^k X_t =  \sum_{k=0}^n \begin{pmatrix}
+            n \\ k
+        \end{pmatrix}(-1)^{k} X_{t-k}
+    \end{align*}
+
+    \noindent As a result, we can write:
+    \begin{align*}
+        X_t = \nabla^nX_t - \sum_{k=1}^n \begin{pmatrix} n \\ k \end{pmatrix} (-1)^k X_{t-k}
+    \end{align*}
+\end{proposition}
+
+\begin{proof*}[Proposition \ref{prop:binomial_formula_diff_operator}]
+    Using the Binomial theorem, we have:
+    \begin{align*}
+        \nabla^n X_t 
+            &= (I-B)^n X_t \\
+            &= \sum_{k=0}^n \begin{pmatrix} n \\ k \end{pmatrix} (I)^{n-k}(-B)^k X_t \ \ \ (\text{Binomial theorem}) \\
+            &= \sum_{k=0}^n \begin{pmatrix} n \\ k \end{pmatrix} (-1)^k B^kX_t \\
+            &= \sum_{k=0}^n \begin{pmatrix} n \\ k \end{pmatrix} (-1)^k X_{t-k} \\
+            &= X_t + \sum_{k=1}^n \begin{pmatrix} n \\ k \end{pmatrix} (-1)^k X_{t-k} \\
+            \implies X_t &= \nabla^n X_t - \sum_{k=1}^n \begin{pmatrix} n \\ k \end{pmatrix} (-1)^k X_{t-k}
+    \end{align*}
+\end{proof*}
+
+\subsection{Trend + Seasonality model}
+\begin{definition}[Trend + Seasonality model]
+    The model that displays both trend and seasonality is defined as:
+    \begin{align*}
+        X_t = T_t + S_t + R_t
+    \end{align*}
+
+    \noindent There are two types of seasonality:
+    \begin{itemize}
+        \item \textbf{Constant seasonality} : degree of seasonality does not depend on time.
+        \item \textbf{Varying (increasing) seasonality} : degree of seasonality depends on time.
+    \end{itemize}
+\end{definition}
+
+\textbf{Remark} : When the time-series displays increasing seasonality, it is a common practice to transform the data so that the series display constant seasonality.
+
+\begin{definition}[Box-Cox transformation]
+    For some $\lambda > 0$, the Box-Cox transformation is defined as:
+    \begin{align*}
+        z_t = \frac{x_t^\lambda-1}{\lambda}
+    \end{align*}
+\end{definition}
+
+\begin{proposition}{Box-Cox as $\lambda\to0$}{box_cox_lambda_to_0}
+    As $\lambda\to0$, $z_t \to \log(x_t)$.
+\end{proposition}
+
+\begin{proof*}[Proposition \ref{prop:box_cox_lambda_to_0}]
+    We can write:
+    \begin{align*}
+        \lim_{\lambda\to0} e^{z_t} 
+        &= \lim_{\lambda\to0} \lim_{n \to \infty} \Biggl(
+            1 + \frac{z_t}{n}
+        \Biggr)^n \\
+        &= \lim_{\lambda \to 0} \Biggl(
+            1 + \lambda z_t
+        \Biggr)^{1/\lambda} \ \ \ \Biggl(
+            \text{Letting } n = \frac{1}{\lambda}
+        \Biggr) \\
+        &= \lim_{\lambda \to 0} \Biggl(
+            1 + (x^\lambda - 1)
+        \Biggr)^{1/\lambda} = x_t \\
+        \implies \lim_{\lambda\to0} z_t &= \log(x_t) 
+    \end{align*}
+\end{proof*}
+
+\subsection{Modelling seasonality using dummy variables}
+\begin{definition}[Dummy variables for seasonality]
+    The seasonal factor (supposing that there are $L$ seasons) expressed using dummy variables can be written as:
+    \begin{align*}
+        S_t = \beta^{(s)}_1D_1(t) + \dots + \beta^{(s)}_{L-1}D_{L-1}(t)
+    \end{align*}
+
+    \noindent Where we have:
+    \begin{align*}
+        D_k(t) = \begin{cases}
+            1, &\text{if $t$ belongs to season $k$}
+            \\ \\
+            0, &\text{otherwise}
+        \end{cases}
+    \end{align*}
+
+    \noindent We can write the time-series whose seasonality is modelled using dummy variables as:
+    \begin{align*}
+        X_t = T_t + \sum_{k=1}^{L-1}\beta^{(s)}_kD_k(t) + R_t
+    \end{align*}
+\end{definition}
+
+\textbf{Remark} : Take a time-series with linear trend and seasonality modelled using dummy variables as an example. Suppose that we have 4 seasons, the time-series will take the form:
+\begin{align*}
+    X_t = \underbrace{\beta_0 + \beta_1t}_{T_t} + \underbrace{\beta_1^{(s)}D_1(t) + \beta_2^{(s)}D_2(t) + \beta_3^{(s)}D_3(t)}_{S_t} + R_t
+\end{align*}
+
+\noindent We can estimate the parameters $\beta=\Bigl( \beta_0, \beta_1, \beta^{(s)}_1, \beta^{(s)}_2, \beta^{(s)}_3 \Bigr)$ the same way we do for linear regression models:
+\begin{align*}
+    \hat\beta = \Bigl(X^TX\Bigr)^{-1} \Bigl(X^Ty\Bigr), \ \ X \in \mathbb{R}^{T\times 5}
+\end{align*}
+
+\noindent Where $T$ is the length of the time-series.
+
+
+\subsection{Autocorrelation \& autocorrelation function (ACF)}
+\begin{definition}[Autocovariance \& Autocorrelation]
+    Given a time-series $(X_t)_{t\ge0}$, the autocovariance $\gamma(h)$ and autocorrelation $\rho(h)$ are defined as followed:
+    \begin{align*}
+        \gamma(h) &= Cov\Bigl(X_{t+h}, X_{t}\Bigr) \\
+        \rho(h) &= \frac{\gamma(h)}{Var(X_t)} = \frac{\gamma(h)}{\gamma(0)}
+    \end{align*}
+
+    \noindent When we are given a set of observations $(x_t)_{t=1}^n$, we can estimate $\gamma, \rho$ by using their sample counterparts:
+    \begin{align*}
+        \hat\gamma(h) &= \frac{1}{n}\sum_{t=1}^{n-h}(x_{t+h}-\overline{x})(x_t-\overline{x})
+        \\
+        \hat\rho(h) &= \frac{\hat\gamma(h)}{\hat\gamma(0)} = \frac{
+            \sum_{t=1}^{n-h}(x_{t+h}-\overline{x})(x_t-\overline{x})
+        }{
+            \sum_{t=1}^n(x_{t}-\overline{x})^2
+        }
+    \end{align*}
+\end{definition}
+
+\begin{definition}[Autocorrelation function (ACF)]
+    The autocorrelation function, or correlogram is the plot of sample autocorrelation coefficients $\hat\rho(h)$ against $h=0,1,2,\dots$.
+\end{definition}

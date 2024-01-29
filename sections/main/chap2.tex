@@ -1,0 +1,32 @@
+\newpage
+\section{Stationary time-series}
+\subsection{Strict vs. Weak stationarity}
+
+\begin{definition}[Mean, covariance and variance functions]
+    Given a time-series $(X_t)_{t\in T}$ (where $T$ is a time domain), we have the following functions:
+    \begin{itemize}
+        \item Mean : $\mu(t)=\mathbb{E}[X_t], \ t\in T$.
+        \item Covariance : $\gamma(t, s) = Cov(X_t, X_s), \ t, s\in T$.
+        \item Variance : $\sigma^2(t) = \gamma(t,t)= Var(X_t), \ t\in T$.
+    \end{itemize}
+\end{definition}
+
+
+\begin{definition}[Strict stationarity]
+    A time-series is said to be \textbf{strictly stationary} if, $\forall n \in \mathbb{Z}_+, h \in \mathbb{N}$, we have:
+    \begin{align*}
+        (X_1, \dots, X_n) \stackrel{d}{\simeq} (X_{1+h}, \dots, X_{n+h}) 
+    \end{align*}
+
+    \noindent Meaning the two tuples are equal in distribution.
+\end{definition}
+
+\noindent \textbf{Remark} : Note that in practice, strict stationarity is often hard to achieve. Hence, we have some relaxed conditions for stationarity.
+
+\begin{definition}[Weak stationarity]
+    A time-series $(X_t)_{t\ge0}$ is said to be \textbf{weakly stationary} if the following two conditions are met:
+    \begin{itemize}
+        \item $\mu(t)$ does not depend on $t$.
+        \item $\gamma(t, h)$ does not depend on $t$ for all $h\in\mathbb{N}$.
+    \end{itemize}
+\end{definition}
