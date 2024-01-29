@@ -172,7 +172,7 @@
 
 
 \subsection{Autocorrelation \& autocorrelation function (ACF)}
-\begin{definition}[Autocovariance \& Autocorrelation]
+\begin{definition}[Autocovariance \& Autocorrelation functions]
     Given a time-series $(X_t)_{t\ge0}$, the autocovariance $\gamma(h)$ and autocorrelation $\rho(h)$ are defined as followed:
     \begin{align*}
         \gamma(h) &= Cov\Bigl(X_{t+h}, X_{t}\Bigr) \\
@@ -189,8 +189,18 @@
             \sum_{t=1}^n(x_{t}-\overline{x})^2
         }
     \end{align*}
+
+    \noindent We have the following useful identities:
+    \begin{itemize}
+        \item $\gamma_0=Var(X_t)$.
+        \item $\gamma_k=\gamma_{-k}$ (symmetric).
+        \item $\rho_0 = 1$.
+        \item $\rho_k = \rho_{-k}$ (symmetric).
+    \end{itemize}
 \end{definition}
 
-\begin{definition}[Autocorrelation function (ACF)]
-    The autocorrelation function, or correlogram is the plot of sample autocorrelation coefficients $\hat\rho(h)$ against $h=0,1,2,\dots$.
+\begin{definition}[Autocorrelation function (ACF) plot]
+    The autocorrelation function plot, or correlogram is the plot of sample autocorrelation coefficients $\hat\rho(h)$ against $h=0,1,2,\dots$.
 \end{definition}
+
+
