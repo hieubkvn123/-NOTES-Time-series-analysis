@@ -52,9 +52,55 @@
 \textbf{Remark} : The following propositions are proven to provide the insight into the properties of the $MA(a)$ model.
 
 \begin{proposition}{Stationarity of $\bf MA(q)$}{stationary_of_ma}
-    
+    The moving average model \textbf{MA(q)} is stationary. Specifically, for a time-series $X_t$ that follows the ${\bf MA(q)}$ model, we have:
+    \begin{itemize}
+        \item $\mathbb{E}[X_t] = 0$.
+        \item $\gamma(k) = \Bigg( \theta_k + \sum_{j=1}^{q-k}\sum_{i=k+j}^q \theta_i \theta_j \Bigg)\sigma^2$.
+    \end{itemize}
 \end{proposition}
 
-\begin{proposition}{Cut-off of ACF in $\bf MA(q)$}{cut_off_of_acf_in_ma}
-    
-\end{proposition}
+\begin{proof*}[Proposition \ref{prop:stationary_of_ma}]
+    To calculate the mean of $X_t$, we have:
+    \begin{align*}
+        \mathbb{E}[X_t] &= \mathbb{E}\Bigg[
+            Z_t + \sum_{j=1}^q \theta_jZ_{t-j} 
+        \Bigg] = \mathbb{E}[Z_t] + \sum_{j=1}^q\theta_j \mathbb{E}[Z_{t-j}] = 0
+    \end{align*}
+
+    \noindent To calculate the covariance, we have:
+    \begin{align*}
+        \gamma(k) &= Cov\Bigg( 
+            Z_t + \sum_{i=1}^q \theta_i Z_{t-i}, Z_{t-k} + \sum_{j=1}^q \theta_j Z_{t-k-j}    
+        \Bigg) \\
+        &= \underbrace{Cov(Z_t, Z_{t-k})}_{=0} + \underbrace{\sum_{j=1}^q \theta_j Cov(Z_t, Z_{t-k-j})}_{=0} + \sum_{i=1}^q \theta_i Cov(Z_{t-i}, Z_{t-k}) \\ &+ \sum_{i=1}^q\sum_{j=1}^q \theta_i\theta_j Cov(Z_{t-i}, Z_{t-k-j})
+    \end{align*}
+
+    \noindent When $k > q$, we know that $Cov(Z_{t-i}, Z_{t-k-j})=0$ and $Cov(Z_{t-i}, Z_{t-k})=0$ for all $1 \le i, j \le q$. Therefore, suppose that $1\le q\le k$, we have:
+
+    \begin{align*}
+        \gamma(k) &= \sum_{i=1}^q \theta_i Cov(Z_{t-i}, Z_{t-k}) + \sum_{i=1}^q\sum_{j=1}^q \theta_i\theta_j Cov(Z_{t-i}, Z_{t-k-j}) \\
+        &= \theta_k Cov(Z_{t-k}, Z_{t-k}) + \sum_{j=1}^{q-k}\sum_{i=k+j}^q \theta_i \theta_j Cov(Z_{t-k-j}, Z_{t-k-j}) \\
+        &= \sigma^2\Bigg( 
+            \theta_k  + \sum_{j=1}^{q-k}\sum_{i=k+j}^q \theta_i \theta_j
+        \Bigg)
+    \end{align*}
+
+    \noindent \textbf{Remark} : When we set $k=0$, we obtain the variance and the correlation functions for $X_t$:
+    \begin{align*}
+        Var(X_t) &= \sigma^2 \Bigg( 1 + \sum_{j=1}^q \theta_j^2 \Bigg) \\
+        \implies 
+        \rho(k) &= \frac{\theta_k  + \sum_{j=1}^{q-k}\sum_{i=k+j}^q \theta_i \theta_j}{1+\sum_{j=1}^q \theta_j^2 }, \ \ 1 < k \le q
+    \end{align*}
+\end{proof*}
+
+\begin{definition}[${\bf MA(\infty)}$ model]
+    Assume that $Z_t\sim WN(0, \sigma^2)$ and $\psi_0=1$. A time-series $X_t$ following the $\bf MA(\infty)$ model is defined as:
+    \begin{align*}
+        X_t = \sum_{j=0}^\infty \psi_j Z_{t-j}, \ \ \sum_{j=0}|\psi_j| < \infty
+    \end{align*}
+
+    \noindent $X_t$ is called a \textbf{Generalized linear process} or an $\bf MA(\infty)$ process. 
+\end{definition}
+
+\subsection{Autoregressive - ${\bf AR(p)}$ model}
+
