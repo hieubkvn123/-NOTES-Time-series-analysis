@@ -43,7 +43,7 @@
 \end{definition}
 
 \begin{definition}[$\bf MA(q)$ model]
-    The moving average of order $q$ is defined as followed:
+    The moving average of order $\bf q$ is defined as followed:
     \begin{align*}
         X_t = Z_t + \sum_{j=1}^q \theta_j Z_{t-j}, \ Z_t\sim WN(0,\sigma^2)
     \end{align*}
@@ -103,4 +103,97 @@
 \end{definition}
 
 \subsection{Autoregressive - ${\bf AR(p)}$ model}
+\begin{definition}[${\bf AR(p)}$ model]
+    The autoregressive model of order $\bf p$ is defined as followed:
+    \begin{align*}
+        X_{t} = Z_t + \sum_{i=1}^p \phi_i X_{t-i}
+    \end{align*}
 
+    \noindent Defining the $p^{th}$ degree polynomial:
+    \begin{align*}
+        \phi(z) = 1 - \sum_{i=1}^p \phi_i z^i
+    \end{align*}
+
+    \noindent We can re-write the $\bf AR(p)$ model as followed:
+    \begin{align*}
+        Z_t = \phi(B)X_t, \ \ B^i X_t = X_{t-i}
+    \end{align*}
+\end{definition}
+
+\begin{theorem}{Yule-Walker Equation}{yule_walker_eqn}
+    Let $(X_t)_{t\ge0}$ follows the $\bf AR(p)$ model. Let $k\ge1$, the Yule-Walker equations are defined as:
+    \begin{align*}
+        \rho_k = \phi_1\rho_{k-1} + \dots + \phi_p\rho_{k-p} = \sum_{j=1}^p \phi_j \rho_{k-j}
+    \end{align*}
+\end{theorem}
+
+\begin{proof*}[Theorem \ref{thm:yule_walker_eqn}]
+    We have:
+    \begin{align*}
+        X_t = Z_t + \sum_{j=1}^p \phi_j X_{t-j}
+    \end{align*}
+
+    \noindent Recall the fact that:
+    \begin{align*}
+        Cov(X, Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+    \end{align*}
+    
+    \noindent Hence, we have:
+    \begin{align*}
+        \gamma_k &= Cov(X_t, X_{t-k}) \\
+            &= \E[X_tX_{t-k}] - \E[X_t]\E[X_{t-k}] \ \ \ (\E[X_t]=0, \ \ \forall t \ge 0) \\
+            &= \E[X_tX_{t-k}] \\
+            &= \E\Bigg[
+                Z_tX_{t-k} + \sum_{j=1}^p \phi_j X_{t-j} X_{t-k}    
+            \Bigg] \\
+            &= \underbrace{\E[Z_tX_{t-k}]}_{=0} + \sum_{j=1}^p \phi_j \E[X_{t-j}X_{t-k}] \\
+            &= \sum_{j=1}^p \phi_j \gamma_{k-j}
+    \end{align*}
+
+    \noindent Dividing both sides with $\gamma_0$, we have:
+    \begin{align*}
+        \rho_k = \sum_{j=1}^p \phi_j \rho_{k-j}
+    \end{align*}
+\end{proof*}
+
+\begin{theorem}{Stationarity of $\bf AR(1)$}{stationarity_of_ar_1}
+    $\bf AR(1)$ is stationarity if all the roots of the polynomial $\phi(z)$ are outside the unit circle. Furthermore, the ACF decays exponentially.
+\end{theorem}
+
+\begin{proof*}[Theorem \ref{thm:stationarity_of_ar_1}]
+    Consider the $\bf AR(1)$ model, we have:
+    \begin{align*}
+        X_t = \phi_1X_{t-1} + Z_t, \ Z_t \sim WN(0,\sigma^2)
+    \end{align*}
+
+    \noindent Then, we have:
+    \begin{align*}
+        \phi(z) = 1 - \phi_1z
+    \end{align*}
+
+    \noindent Hence, we have the root $z = \frac{1}{\phi_1}$. We will show that $X_t$ is stationary if and only if $|\phi_1| < 1$. Hence, $|z| > 1$ and the root lies outside the unit circle. We have:
+    \begin{align*}
+        X_1 &= \phi_1X_0 + Z_1 \\
+        X_2 &= \phi_1(\phi_1X_0 + Z_1) + Z_2 = \phi_1^2X_0 + \phi_1Z_1 + Z_2 \\
+        &\dots \\
+        X_t &= \phi_1^t X_0 + \sum_{j=1}^t \phi_1^j Z_{t-j}
+    \end{align*}
+
+    \noindent Hence, if $|\phi_1| > 1 \implies \E[X_t] = \phi_1^t \E[X_0]$, which is dependent on $t$. On the other hand, $|\phi_1| < 1 \implies \E[X_t]\to0$ as $t\to\infty$. Therefore, $X_t$ is stationary.
+
+    \noindent To prove that the ACF decays exponentially, by the Yule-Walker equations, we have:
+    \begin{align*}
+        \rho_k &= \phi_1^k \rho_0 = \phi_1^k \\
+        \implies |\rho_k| &= |\phi_1|^k = e^{k\log|\phi_1|}
+    \end{align*}
+
+    \noindent Hence, when $|\phi_1|< 1$, $|\rho_k|$ decays exponentially.
+\end{proof*}
+
+\begin{theorem}{Stationarity of $AR(p)$}{stationarity_of_ar_p}
+    $\bf AR(p)$ is stationary if all the roots of the polynomial $\phi(z)$ are outside the unit circle.
+\end{theorem}
+
+\begin{proof*}[Theorem \ref{thm:stationarity_of_ar_p}]
+    We will revise the proof for this theorem later.
+\end{proof*}
